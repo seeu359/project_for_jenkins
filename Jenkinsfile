@@ -40,10 +40,11 @@ pipeline {
                 archiveArtifacts(artifacts: 'backend/target/sausage-store-0.0.1-SNAPSHOT.jar')
                 archiveArtifacts(artifacts: 'frontend/dist/frontend/*')
             }
-        }
 	post {
 	    success {
 			sh "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"893313228\", \"text\": \"Приложение успешно собрано.\" }' https://api.telegram.org/bot7614166167:AAGNZvZX3e9PnrMtwiPMgRXa9BgbULazbRs/sendMessage"		
 	   }
 	}
+}
+}
 } 
