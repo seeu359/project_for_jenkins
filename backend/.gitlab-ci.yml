@@ -1,0 +1,27 @@
+stages:
+  - build
+  - notify
+
+
+build-backend-code-job:
+  stage: build
+  script:
+    - cd backend
+    - mvn package
+  only:
+    changes:
+      - backend/*
+  artifacts:
+    paths:
+      - backend/target/sausage-store-0.0.1.jar
+
+telegram-notification-backend:
+  stage: notify
+  script:
+    - sh "curl -X POST -H 'Content-type: application/json' --data '{\"chat_id\": \"893313228\", \"text\": \"Backend приложения успешно собран. Адрес для скачивания артефактов http://localhost/devops_practice/project_for_jenkins/-/jobs/artifacts/$CI_COMMIT_SHA/download?job=$CI_JOB_NAME .\" }' https://api.telegram.org/bot7614166167:AAGNZvZX3e9PnrMtwiPMgRXa9BgbULazbRs/sendMessage"
+  only:
+    changes:
+      - backend/*
+  needs:
+    - build-backend-code-job
+
